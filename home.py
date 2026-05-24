@@ -222,7 +222,7 @@ def render_sidebar():
             else:
                 st.warning("Спочатку завантажте CSV файл.")
 
-        with st.expander("ℹ️ Про моделі"):
+        with st.expander("Про моделі"):
             st.markdown("""
                 **ARIMA** — класична статистична модель часових рядів. Добре вловлює короткострокові тренди.
 
@@ -281,9 +281,9 @@ def show():
             delta=f"{delta_val:+.4f} ({delta_pct:+.1f}%)",
         )
     with c3:
-        st.metric("Backtest Accuracy", f"{bt['accuracy']:.1f}%" if bt["accuracy"] is not None else "N/A")
+        st.metric("Точність", f"{bt['accuracy']:.1f}%" if bt["accuracy"] is not None else "N/A")
     with c4:
-        st.metric("MAPE", f"{bt['mape']:.2f}%" if bt["mape"] is not None else "N/A")
+        st.metric("Середня абсолютна відсоткова помилка", f"{bt['mape']:.2f}%" if bt["mape"] is not None else "N/A")
 
     st.divider()
 
@@ -345,17 +345,17 @@ def show():
     st.plotly_chart(fig, use_container_width=True)
 
     if bt["mape"] is not None:
-        with st.expander("🔬 Деталі валідації моделі"):
+        with st.expander("Деталі валідації моделі"):
             b1, b2, b3 = st.columns(3)
             with b1:
-                st.metric("MAPE", f"{bt['mape']:.2f}%", help="Mean Absolute Percentage Error")
+                st.metric("MAPE", f"{bt['mape']:.2f}%", help="Середня абсолютна відсоткова помилка")
             with b2:
-                st.metric("MAE", f"{bt['mae']:.4f}", help="Mean Absolute Error")
+                st.metric("MAE", f"{bt['mae']:.4f}", help="Середня абсолютна похибка")
             with b3:
                 st.metric("Розмір вибірки", f"{len(history_series)} точок")
             st.caption("Модель навчалась на перших 80% даних і перевірялась на останніх 20%.")
 
-    with st.expander("📊 Таблиця прогнозних значень"):
+    with st.expander("Таблиця прогнозних значень"):
         result_df = pd.DataFrame({
             "Дата":     forecast_dates.strftime("%Y-%m-%d"),
             "Прогноз":  np.round(forecast_values, 4),
@@ -377,7 +377,6 @@ def show():
 
 def _render_save_section(data, col_date, col_value, model_type, forecast_days,
                           history_series, forecast_values, conf_int, bt, forecast_dates):
-    """Блок збереження прогнозу в БД."""
 
     already_saved = st.session_state.get("forecast_saved", False)
 

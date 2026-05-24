@@ -1,40 +1,29 @@
-"""
-pages/auth.py — Сторінка авторизації (вхід / реєстрація)
-"""
-
 import streamlit as st
 from database import register_user, login_user
 
 
 def show():
-    """Відображає форму входу або реєстрації. Керує st.session_state.user."""
-
     st.markdown(
         """
         <style>
-            /* Змушуємо кнопки вкладок розтягуватися на всю ширину від лівого до правого краю */
             button[data-baseweb="tab"] {
                 flex: 1 !important;
                 height: 50px !important;
             }
-            /* Збільшуємо розмір шрифту та центруємо текст всередині кнопок вкладок */
             button[data-baseweb="tab"] p {
                 font-size: 18px !important;
                 font-weight: 600 !important;
                 text-align: center !important;
                 width: 100% !important;
             }
-            /* Центруємо всі заголовки тексту (h2, h4, h5) на сторінці */
             h2, h4, h5 {
                 text-align: center !important;
                 width: 100% !important;
             }
-            /* Центруємо назви полів введення (labels) над інпутами */
             [data-testid="stWidgetLabel"] p {
                 text-align: center !important;
                 width: 100% !important;
             }
-            /* Центруємо системні сповіщення (помилки / успіх) */
             [data-testid="stNotification"] {
                 text-align: center !important;
             }
