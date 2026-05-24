@@ -124,9 +124,9 @@ def _show_detail(forecast_id: int):
             delta=f"{delta_val:+.4f} ({delta_pct:+.2f}%)",
         )
     with c3:
-        st.metric("Backtest Accuracy", f"{fc['accuracy']:.1f}%" if fc.get("accuracy") else "N/A")
+        st.metric("Точність", f"{fc['accuracy']:.1f}%" if fc.get("accuracy") else "N/A")
     with c4:
-        st.metric("MAPE", f"{fc['mape']:.2f}%" if fc.get("mape") else "N/A")
+        st.metric("Середня абсолютна відсоткова помилка", f"{fc['mape']:.2f}%" if fc.get("mape") else "N/A")
 
     st.divider()
 

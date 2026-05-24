@@ -1,7 +1,7 @@
 """
 Таблиці:
-  users          — акаунти користувачів (bcrypt паролі)
-  forecasts      — збережені прогнози (points_json замість окремої таблиці)
+  users          — акаунти користувачів
+  forecasts      — збережені прогнози
   uploaded_files — метадані про завантажені CSV файли
 """
 
@@ -328,7 +328,7 @@ def db_exists() -> bool:
 
 if __name__ == "__main__":
     init_db()
-    print(f"✅ БД ініціалізована: {DB_PATH}")
+    print(f"БД ініціалізована: {DB_PATH}")
 
     res = register_user("test_user", "test@example.com", "password123")
     print(f"Реєстрація:     {res}")
