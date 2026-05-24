@@ -1,7 +1,3 @@
-"""
-pages/home.py — Головна сторінка: завантаження CSV, прогноз, збереження
-"""
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -183,11 +179,10 @@ def run_forecast(data, col_date, col_value, model_type, forecast_days):
         "uploaded_filename": st.session_state.get("uploaded_filename", ""),
     }
     st.session_state.forecast_triggered = True
-    st.session_state.forecast_saved = False   # скидаємо прапор збереження
+    st.session_state.forecast_saved = False 
 
 
 def render_sidebar():
-    """Малює блок налаштувань у сайдбарі. Повертає (data, col_date, col_value, model_type, forecast_days)."""
     st.subheader("Налаштування")
     uploaded_file = st.file_uploader("Завантажте CSV файл", type=["csv"])
 
@@ -213,14 +208,14 @@ def render_sidebar():
             df[col_value] = pd.to_numeric(df[col_value], errors="coerce")
             df = df.dropna(subset=[col_value, col_date]).sort_values(by=col_date)
             data = df
-            st.success(f"✅ {len(df)} рядків завантажено")
+            st.success(f"{len(df)} рядків завантажено")
         except Exception as e:
             st.error(f"Помилка обробки: {e}")
 
         model_type    = st.selectbox("Метод прогнозу", ["ARIMA (Auto)", "Holt-Winters", "Prophet (Meta)"])
         forecast_days = st.slider("Горизонт прогнозу (дні)", 1, 90, 30)
 
-        if st.button("🚀 Згенерувати прогноз", use_container_width=True, type="primary"):
+        if st.button("Згенерувати прогноз", use_container_width=True, type="primary"):
             if data is not None:
                 with st.spinner("Розрахунок прогнозу..."):
                     run_forecast(data, col_date, col_value, model_type, forecast_days)
@@ -229,44 +224,39 @@ def render_sidebar():
 
         with st.expander("ℹ️ Про моделі"):
             st.markdown("""
-**ARIMA** — класична статистична модель часових рядів. Добре вловлює короткострокові тренди.
+                **ARIMA** — класична статистична модель часових рядів. Добре вловлює короткострокові тренди.
 
-**Holt-Winters** — метод експоненційного згладжування з урахуванням тренду. Стабільний і надійний.
+                **Holt-Winters** — метод експоненційного згладжування з урахуванням тренду. Стабільний і надійний.
 
-**Prophet** — модель від Meta. Використовує лінійний тренд з консервативними параметрами для реалістичних прогнозів.
-""")
+                **Prophet** — модель від Meta. Використовує лінійний тренд з консервативними параметрами для реалістичних прогнозів.
+            """)
 
     return data, col_date, col_value, model_type, forecast_days
 
 
 
 def render(user_id: int):
-    """
-    Точка входу з app.py.
-    Малює сайдбар із налаштуваннями, потім основний контент.
-    """
     with st.sidebar:
         render_sidebar()
     show()
 
 
 def show():
-    """Відображає головну сторінку з прогнозом."""
-    st.title("📈 Розширений економічний аналіз")
+    st.title("Економічний аналіз")
 
     result = st.session_state.get("forecast_result")
 
     if result is None or not st.session_state.get("forecast_triggered"):
-        st.info("👆 Завантажте CSV файл у бічному меню та натисніть «Згенерувати прогноз».")
+        st.info("Завантажте CSV файл у бічному меню та натисніть «Згенерувати прогноз».")
         st.markdown("""
-### Очікуваний формат CSV:
-| Date | Close |
-|------|-------|
-| 2023-01-01 | 150.25 |
-| 2023-01-02 | 152.10 |
+            ### Очікуваний формат CSV:
+            | Date | Price |
+            |------|-------|
+            | 2023-01-01 | 150.25 |
+            | 2023-01-02 | 152.10 |
 
-Підтримуються формати дат: `YYYY-MM-DD`, `DD/MM/YYYY`, `MM/DD/YYYY`
-""")
+            Підтримуються формати дат: `YYYY-MM-DD`, `DD/MM/YYYY`, `MM/DD/YYYY`
+        """)
         return
 
     data            = result["data"]
@@ -392,14 +382,14 @@ def _render_save_section(data, col_date, col_value, model_type, forecast_days,
     already_saved = st.session_state.get("forecast_saved", False)
 
     if already_saved:
-        st.success("✅ Прогноз збережено в Історії.")
+        st.success("Прогноз збережено в Історії.")
         return
 
-    st.markdown("### 💾 Зберегти прогноз")
+    st.markdown("### Зберегти прогноз")
 
     forecast_name = st.text_input(
         "Назва прогнозу",
-        placeholder="Наприклад: AAPL травень 2026",
+        placeholder="",
         key="forecast_name_input",
     )
 
